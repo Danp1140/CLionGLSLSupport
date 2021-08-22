@@ -1,0 +1,35 @@
+{
+    parserClass="org.intellij.sdk.language.parser.GLSLParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="GLSL"
+    psiImplClassSuffix="Impl"
+    psiPackage="org.intellij.sdk.language.psi"
+    psiImplPackage="org.intellij.sdk.language.psi.impl"
+
+    elementTypeHolderClass="org.intellij.sdk.language.psi.GLSLTypes"
+    elementTypeClass="org.intellij.sdk.language.psi.GLSLElementType"
+    tokenTypeClass="org.intellij.sdk.language.psi.GLSLTokenType"
+
+    psiImplUtilClass="org.intellij.sdk.language.psi.impl.GLSLPsiImplUtil"
+}
+
+//quick note: i ran into code that was generated incorrectly, using old, deleted elements from the bnf file
+//solution was to delete bad file and regen
+
+//kay so idk how token stuff works, cause consumeToken is called in the generated code, yet it doesnt seem to matter,
+//that the PARENTHASIS token is consumed, but parenthasis comes up in char form during some rules
+
+glslFile::=item_*
+private item_::=(layout|version_set|declaration|assign|function_call|COMMENT|CRLF|PARENTHASIS|BRACKET|BRACE|COMMA|SEMICOLON)
+version_set::=VERSION NUMBER "core"?
+//some layout_quals require an equals and a value, some dont...
+layout::="layout" '(' (LAYOUT_QUAL [','LAYOUT_QUAL]) ')' KEYWORD? TYPE KEY ';'
+assign::=KEY SEPARATOR (NUMBER|VALUE|function_call) ';'
+declaration::=TYPE KEY (SEPARATOR (NUMBER|VALUE|function_call))? ';' {
+    mixin="org.intellij.sdk.language.psi.impl.GLSLNamedElementImpl"
+    implements="org.intellij.sdk.language.psi.GLSLNamedElement"
+    methods=[getKey getValue getName setName getNameIdentifier]
+}
+function_call::=FUNCTION_NAME '(' FUNCTION_PARAMETERS ')' ';'

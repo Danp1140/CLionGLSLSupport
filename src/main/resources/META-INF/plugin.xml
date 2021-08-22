@@ -1,0 +1,35 @@
+<idea-plugin>
+    <id>org.whatever.GLSLSupportPlugin</id>
+    <name>GLSLSupport</name>
+    <vendor email="paavola.dan@gmail.com">Daniel Paavola</vendor>
+
+    <description>Comprehensive GLSL Support, including hightlighting and code completion</description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.clion.ide</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="GLSL File"
+                  implementationClass="org.intellij.sdk.language.GLSLFileType"
+                  fieldName="INSTANCE"
+                  language="GLSL"
+                  extensions="glsl"/>
+        <lang.parserDefinition language="GLSL"
+                               implementationClass="org.intellij.sdk.language.GLSLParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="GLSL"
+                                       implementationClass="org.intellij.sdk.language.GLSLSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="org.intellij.sdk.language.GLSLColorSettingsPage"/>
+        <annotator language="GLSL"
+                   implementationClass="org.intellij.sdk.language.GLSLAnnotator"/>
+        <completion.contributor language="GLSL"
+                                implementationClass="org.intellij.sdk.language.GLSLCompletionContributor"/>
+        <psi.referenceContributor implementation="org.intellij.sdk.language.GLSLReferenceContributor"/>
+    </extensions>
+
+
+    <actions>
+
+    </actions>
+</idea-plugin>
